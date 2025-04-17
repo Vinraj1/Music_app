@@ -250,8 +250,8 @@ padding: 20px; /* Add padding for lyrics container */
 
 .lyrics {
 font-size: 600%;
-font-family: "Sofia", sans-serif; /* Specify the desired font family */
-color: #88ff00; /* Set the text color */
+font-family: "Times new roman"; /* Specify the desired font family */
+color: white; /* Set the text color */
 line-height: 1.6; /* Set the line height for better readability */
 }
 
