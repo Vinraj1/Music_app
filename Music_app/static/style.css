@@ -5,6 +5,8 @@ html {
     background: black;
 }
 body {
+    height: auto;
+    width: auto;
     margin: 0;
     font-family: "Raleway",sans-serif;
 }
