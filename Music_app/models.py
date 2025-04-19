@@ -5,8 +5,8 @@ from django.db import models
 class Song(models.Model):
     title= models.TextField()
     artist= models.TextField()
-    image= models.ImageField()
-    audio_file = models.FileField(blank=True,null=True)
+    image= models.ImageField(upload_to = "media/")
+    audio_file = models.FileField(upload_to = "media/")
     audio_link = models.CharField(max_length=200,blank=True,null=True)
     lyrics=models.TextField(blank=True,null=True)
     duration=models.CharField(max_length=20)
