@@ -11,5 +11,4 @@
         { "src": "/static/(.*)", "dest": "/static/$1" },
         { "src": "/(.*)", "dest": "Music/wsgi.py" }
          ]
-    }
 }
