@@ -1,47 +1,55 @@
+{% load static %}
+
+<!DOCTYPE html>
 <html>
-   <head>
-    <meta charset="utf-8"/>
-    <title>
-      music player
-    </title>
-   </head>
-   <body>
-    
- 
-    
-      <div class="music-player">
-        {% for item in page_obj %}
-       <div class="cover">
-        <img alt="" src="{{item.image.url}}"/>
-       </div>
 
-       <div class="titre">
-        <h3>
-         {{item.artist}}
-        </h3>
-        <h1>
-         {{item.title}}
-        </h1>
-       </div>
-       
-       <center><a href="{% if page_obj.has_previous %}?page={{ page_obj.previous_page_number }}{% endif %}"><i class="fa fa-step-backward fa-2x"></i></a> &nbsp; &nbsp; &nbsp; <a href="{% if page_obj.has_next %}?page={{ page_obj.next_page_number }} {% endif %}"><i class="fa fa-step-forward fa-2x"></i></a></center>
-       
-       <div class="lecteur">
-        <audio class="fc-media" style="width: 100%;" id="fc-media">
-         <source src="{% if item.audio_file %}{{item.audio_file.url}} {% else %} {{item.audio_link}} {% endif %}" type="audio/mp3"/>
+<head>
+    <title>Music Player</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+
+</head>
+
+<body>
+
+    <h1>Music Player</h1>
+
+    {% for song in page_obj %}
+
+    <div class="player">
+
+        <!-- Song Image -->
+        <img src="{{ song.image.url }}" width="200">
+
+        <!-- Song Name -->
+        <h2>{{ song.title }}</h2>
+
+        <!-- Audio Player -->
+        <audio controls>
+            <source src="{{ song.audio.url }}" type="audio/mpeg">
         </audio>
-       </div>
-      </div>     
 
-      <div class="right-section">
-        <div class="lyrics-container">
-          <div class="lyrics">
-            <p id="song-lyrics" class="song-lyrics" data-lyrics="{{item.lyrics}}"></p>
-          </div>
-        </div>
-      </div>
+    </div>
 
     {% endfor %}
-.
-   </body>
-  </html>
+
+    <!-- Pagination -->
+    <div>
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+        {% endif %}
+
+        <span>{{ page_obj.number }}</span>
+
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">Next</a>
+        {% endif %}
+    </div>
+
+    <!-- JS -->
+    <script src="{% static 'script.js' %}"></script>
+
+</body>
+
+</html>
