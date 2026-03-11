@@ -1,14 +1,16 @@
 {
+  "version": 2,
   "builds": [
     {
-      "src": "Music/wsgi.py",
+      "src": "weather/wsgi.py",
       "use": "@vercel/python"
     }
   ],
   "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "Music/wsgi.py"
-    }
-  ]
+    { "src": "/static/(.*)", "dest": "/static/$1" },
+    { "src": "/(.*)", "dest": "weather/wsgi.py" }
+  ],
+  "env": {
+    "DJANGO_SETTINGS_MODULE": "weather.settings"
+  }
 }
