@@ -12,7 +12,7 @@
 
     <!-- Page Title -->
     <h1>Music Player</h1>
-    <a href="{% url 'upload_song' %}" class="add-song-btn">
+    <a href="{% url 'Music_app:upload_song' %}" class="add-song-btn">
         +
     </a>
     <br>
@@ -23,12 +23,12 @@
 
         <div class="player" data-index="{{ forloop.counter0 }}">
 
-            <img src="{{ song.get_image_url }}" width="200">
+            <img src="{{ song.image.url }}" width="200">
 
             <h2>{{ song.title }}</h2>
 
             <audio class="fc-media" controls>
-                <source src="{{ song.get_audio_url }}" type="audio/mpeg">
+                <source src="{{ song.audio_file.url }}" type="audio/mpeg">
             </audio>
 
             <div class="lyrics-container">

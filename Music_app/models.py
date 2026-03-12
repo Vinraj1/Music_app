@@ -11,15 +11,5 @@ class Song(models.Model):
     duration=models.CharField(max_length=20)
     paginate_by = 2
 
-    def get_audio_url(self):
-        if self.audio_file:
-            return self.audio_file.url.replace('/media/media/', '/media/')
-        return ""
-
-    def get_image_url(self):
-        if self.image:
-            return self.image.url.replace('/media/media/', '/media/')
-        return ""
-
     def __str__(self):
         return self.title

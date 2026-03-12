@@ -9,10 +9,6 @@ def index(request):
     context={"page_obj":page_obj}
     return render(request,"index.html",context)
 
-def upload_song():
-    from django.shortcuts import render, redirect
-from .models import Song
-
 def upload_song(request):
     if request.method == "POST":
 
@@ -34,6 +30,6 @@ def upload_song(request):
             duration=duration
         )
 
-        return redirect("home")
+        return redirect("index")
 
     return render(request,"upload_song.html")
