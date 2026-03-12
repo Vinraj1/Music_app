@@ -58,6 +58,7 @@ h1 {
     justify-content: center;
     gap: 120px;
 }
+
 .music-container {
     justify-content: center;
 }
@@ -107,16 +108,6 @@ h1 {
     font-weight: 500;
 }
 
-/* Audio Player */
-
-audio {
-    width: 100%;
-    max-width: 280px;
-    margin-top: 10px;
-    border-radius: 50px;
-    outline: none;
-}
-
 /* Progress Bar */
 
 .progress-bar {
@@ -129,7 +120,7 @@ audio {
 
 .progress {
     height: 100%;
-    width: 0%;
+    width: 20%;
     background: #1db954;
     transition: width 0.2s;
 }
@@ -218,82 +209,176 @@ audio {
 
 /* Floating Add Song Button */
 
-.add-song-btn{
-position:fixed;
-bottom:40px;
-right:40px;
-width:60px;
-height:60px;
-background:#1db954;
-color:white;
-font-size:36px;
-border-radius:50%;
-display:flex;
-align-items:center;
-justify-content:center;
-text-decoration:none;
-box-shadow:0 10px 25px rgba(0,0,0,0.5);
-transition:0.3s;
-z-index:999;
+.add-song-btn {
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    width: 60px;
+    height: 60px;
+    background: #1db954;
+    color: white;
+    font-size: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    transition: 0.3s;
+    z-index: 999;
 }
 
-.add-song-btn:hover{
-transform:scale(1.15) rotate(90deg);
-background:#1ed760;
+.add-song-btn:hover {
+    transform: scale(1.15) rotate(90deg);
+    background: #1ed760;
 }
 
 .upload-container {
-            max-width: 600px;
-            margin: auto;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
-        }
+    max-width: 600px;
+    margin: auto;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+}
 
-        .upload-container h2 {
-            text-align: center;
-            margin-bottom: 25px;
-        }
+.upload-container h2 {
+    text-align: center;
+    margin-bottom: 25px;
+}
 
-        .upload-form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
+.upload-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
 
-        .upload-form input,
-        .upload-form textarea {
-            padding: 10px;
-            border-radius: 10px;
-            border: none;
-            outline: none;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-        }
+.upload-form input,
+.upload-form textarea {
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
 
-        .upload-form textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
+.upload-form textarea {
+    resize: vertical;
+    min-height: 100px;
+}
 
-        .upload-form input::placeholder,
-        .upload-form textarea::placeholder {
-            color: #ccc;
-        }
+.upload-form input::placeholder,
+.upload-form textarea::placeholder {
+    color: #ccc;
+}
 
-        .upload-form button {
-            background: #1db954;
-            border: none;
-            padding: 12px;
-            border-radius: 25px;
-            color: white;
-            font-size: 16px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
+.upload-form button {
+    background: #1db954;
+    border: none;
+    padding: 12px;
+    border-radius: 25px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
 
-        .upload-form button:hover {
-            transform: scale(1.05);
-            background: #1ed760;
-        }
+.upload-form button:hover {
+    transform: scale(1.05);
+    background: #1ed760;
+}
+
+/* Audio Player Styling */
+
+.fc-media {
+    width: 100%;
+    height: 40px;
+    margin-top: 12px;
+    border-radius: 25px;
+    outline: none;
+    background: #111;
+}
+
+/* Chrome / Edge audio styling */
+
+.fc-media::-webkit-media-controls-panel {
+    background: #bfbaba;
+    border-radius: 25px;
+}
+
+.fc-media::-webkit-media-controls-play-button {
+    filter: invert(1);
+}
+
+.fc-media::-webkit-media-controls-volume-slider {
+    filter: invert(1);
+}
+
+.fc-media::-webkit-media-controls-timeline {
+    filter: invert(1);
+}
+
+/* Firefox */
+
+.fc-media::-moz-range-track {
+    background: #1db954;
+}
+
+/* Hover effect */
+
+.fc-media:hover {
+    transform: scale(1.02);
+    transition: 0.3s;
+}
+
+/* Audio Player */
+
+audio {
+    width: 100%;
+    max-width: 280px;
+    margin-top: 10px;
+    border-radius: 50px;
+    outline: none;
+}
+
+/* NAVBAR */
+
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    margin-bottom: 40px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: #1db954;
+}
+
+.nav-right a {
+    text-decoration: none;
+    color: white;
+    margin-left: 20px;
+    font-size: 16px;
+    padding: 8px 16px;
+    border-radius: 20px;
+    transition: 0.3s;
+}
+
+.nav-right a:hover {
+    background: #1db954;
+    transform: scale(1.05);
+}

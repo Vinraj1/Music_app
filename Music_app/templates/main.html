@@ -11,7 +11,19 @@
 <body>
 
     <!-- Page Title -->
-    <h1>Music Player</h1>
+    <!-- Navbar -->
+    <nav class="navbar">
+
+        <div class="nav-left">
+            <span class="logo">🎵 Music Player</span>
+        </div>
+
+        <div class="nav-right">
+            <a href="{% url 'Music_app:index' %}">Home</a>
+            <a href="{% url 'Music_app:upload_song' %}">Upload</a>
+        </div>
+
+    </nav>
     <a href="{% url 'Music_app:upload_song' %}" class="add-song-btn">
         +
     </a>

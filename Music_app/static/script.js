@@ -26,3 +26,21 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 });
+
+const songs = document.querySelectorAll(".fc-media");
+
+songs.forEach((song, index) => {
+
+    song.addEventListener("ended", function(){
+
+        let nextSong = songs[index + 1];
+
+        if(nextSong){
+            nextSong.play();
+        }else{
+            songs[0].play(); // restart playlist
+        }
+
+    });
+
+});

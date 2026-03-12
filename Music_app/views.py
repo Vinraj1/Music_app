@@ -30,6 +30,6 @@ def upload_song(request):
             duration=duration
         )
 
-        return redirect("index")
+        return redirect('/')
 
     return render(request,"upload_song.html")
