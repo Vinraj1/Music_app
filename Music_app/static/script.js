@@ -1,26 +1,28 @@
-var audio = {
-    init: function() {
-    var $that = this;
-        $(function() {
-            $that.components.media();
+document.addEventListener("DOMContentLoaded", function () {
+
+    const audios = document.querySelectorAll("audio.fc-media");
+
+    audios.forEach(function (audio, index) {
+
+        audio.addEventListener("play", function () {
+
+            audios.forEach(function (a, i) {
+                if (i !== index) {
+                    a.pause();
+                }
+            });
+
         });
-    },
-    components: {
-        media: function(target) {
-            var media = $('audio.fc-media', (target !== undefined) ? target : 'body');
-            if (media.length) {
-                media.mediaelementplayer({
-                    audioHeight: 40,
-                features : ['playpause', 'current', 'duration', 'progress', 'volume', 'tracks', 'fullscreen'],
-                    alwaysShowControls: true,
-                    timeAndDurationSeparator: '<span></span>',
-                    iPadUseNativeControls: true,
-                    iPhoneUseNativeControls: true,
-                    AndroidUseNativeControls: true
-                });
+
+        audio.addEventListener("ended", function () {
+
+            if (index + 1 < audios.length) {
+                audios[index + 1].currentTime = 0;
+                audios[index + 1].play();
             }
-        },
-    
-    },
-};
-audio.init();
+
+        });
+
+    });
+
+});

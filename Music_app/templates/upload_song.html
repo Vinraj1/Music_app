@@ -1,0 +1,50 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Upload Song</title>
+
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+
+</head>
+
+<body>
+
+    <h1>Add New Song</h1>
+
+    <div class="upload-container">
+
+        <h2>Upload Song</h2>
+
+        <form method="POST" enctype="multipart/form-data" class="upload-form">
+
+            {% csrf_token %}
+
+            <input type="text" name="title" placeholder="Song Title" required>
+
+            <input type="text" name="artist" placeholder="Artist Name" required>
+
+            <label>Song Image</label>
+            <input type="file" name="image" accept="image/*">
+
+            <label>Audio File</label>
+            <input type="file" name="audio_file" accept="audio/*">
+
+            <input type="url" name="audio_link" placeholder="Audio Link (optional)">
+
+            <textarea name="lyrics" placeholder="Song Lyrics"></textarea>
+
+            <input type="number" name="duration" placeholder="Duration (seconds)">
+
+            <button type="submit">Upload Song</button>
+
+        </form>
+
+    </div>
+
+</body>
+
+</html>

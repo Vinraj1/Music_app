@@ -16,8 +16,7 @@
 
  </head>
  <body>
-
- ]
+  
   {% include 'main.html' %}
 
 
@@ -32,6 +31,13 @@
     document.addEventListener('DOMContentLoaded', function () {
         const audio = document.getElementById('fc-media');  // Replace with the actual ID of your audio element
         const lyricsContainer = document.getElementById('song-lyrics');
+        const lyrics = document.getElementById("song-lyrics");
+        if (lyrics) {
+            lyrics.addEventListener("click", function(){
+                console.log("Lyrics clicked");
+            });
+        }
+        
         let currentLyricIndex = 0;
 
         // Retrieve the lyrics data as a JSON string

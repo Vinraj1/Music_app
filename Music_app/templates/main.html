@@ -1,50 +1,57 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html>
 
 <head>
     <title>Music Player</title>
-
     <!-- CSS -->
     <link rel="stylesheet" href="{% static 'style.css' %}">
-
 </head>
 
 <body>
 
+    <!-- Page Title -->
     <h1>Music Player</h1>
+    <a href="{% url 'upload_song' %}" class="add-song-btn">
+        +
+    </a>
+    <br>
+    <!-- Music Grid -->
+    <div class="music-container">
 
-    {% for song in page_obj %}
+        {% for song in page_obj %}
 
-    <div class="player">
+        <div class="player" data-index="{{ forloop.counter0 }}">
 
-        <!-- Song Image -->
-        <img src="{{ song.image.url }}" width="200">
+            <img src="{{ song.get_image_url }}" width="200">
 
-        <!-- Song Name -->
-        <h2>{{ song.title }}</h2>
+            <h2>{{ song.title }}</h2>
 
-        <!-- Audio Player -->
-        <audio controls>
-            <source src="{{ song.audio_file.url }}" type="audio/mpeg">
-        </audio>
+            <audio class="fc-media" controls>
+                <source src="{{ song.get_audio_url }}" type="audio/mpeg">
+            </audio>
+
+            <div class="lyrics-container">
+                <p class="song-lyrics">{{ song.lyrics }}</p>
+            </div>
+
+        </div>
+
+        {% endfor %}
 
     </div>
 
-    {% endfor %}
-
     <!-- Pagination -->
-    <div>
+    <div class="pagination">
+
         {% if page_obj.has_previous %}
         <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
         {% endif %}
 
-        <span>{{ page_obj.number }}</span>
-
         {% if page_obj.has_next %}
         <a href="?page={{ page_obj.next_page_number }}">Next</a>
         {% endif %}
+
     </div>
 
     <!-- JS -->
