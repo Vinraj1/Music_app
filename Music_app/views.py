@@ -3,7 +3,7 @@ from django.core.paginator import Paginator
 from . models import Song
 
 def index(request):
-    paginator = Paginator(Song.objects.all().order_by('id'), 10)
+    paginator = Paginator(Song.objects.all().order_by('id'), 9)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     context={"page_obj":page_obj}
