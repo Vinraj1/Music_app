@@ -3,6 +3,10 @@ from django.core.paginator import Paginator
 from . models import Song
 import requests
 import base64
+from .services.deezer import search_songs
+from .services.youtube import get_video
+from django.http import JsonResponse
+
 
 def index(request):
     paginator = Paginator(Song.objects.all().order_by('id'), 9)
@@ -36,55 +40,38 @@ def upload_song(request):
 
     return render(request,"upload_song.html")
 
-CLIENT_ID = "9c3ba12d930c4f2aa551844484f39264"
-CLIENT_SECRET = "89b8c8a5446e4a72abf30f177a54f854"
-
-
-def get_spotify_token():
-    url = "https://accounts.spotify.com/api/token"
-
-    auth_string = f"{CLIENT_ID}:{CLIENT_SECRET}"
-    auth_bytes = auth_string.encode("utf-8")
-    auth_base64 = str(base64.b64encode(auth_bytes), "utf-8")
-
-    headers = {
-        "Authorization": f"Basic {auth_base64}"
-    }
-
-    data = {
-        "grant_type": "client_credentials"
-    }
-
-    result = requests.post(url, headers=headers, data=data)
-    json_result = result.json()
-
-    return json_result.get("access_token")
-
-def search_spotify(request):
-    query = request.GET.get("q")
-
-    if not query:
-        return render(request, "search.html")
-
-    token = get_spotify_token()
-
-    headers = {
-        "Authorization": f"Bearer {token}"
-    }
-
-    url = f"https://api.spotify.com/v1/search?q={query}&type=track&limit=10"
-
-    response = requests.get(url, headers=headers)
-    data = response.json()
+def search(request):
+    query = request.GET.get('q')
 
     songs = []
+    if query:
+        results = search_songs(query)
 
-    for item in data["tracks"]["items"]:
-        songs.append({
-            "title": item["name"],
-            "artist": item["artists"][0]["name"],
-            "image": item["album"]["images"][0]["url"],
-            "preview": item["preview_url"]
-        })
+        for song in results:
+            video = get_video(f"{song['title']} {song['artist']}")
+            song['video'] = video
+
+        songs = results
 
     return render(request, "search.html", {"songs": songs})
+
+def get_trending():
+    url = "http://ws.audioscrobbler.com/2.0/"
+    
+    params = {
+        "method": "chart.gettoptracks",
+        "api_key": "YOUR_LASTFM_KEY",
+        "format": "json"
+    }
+
+    res = requests.get(url, params=params)
+    return res.json()
+
+def get_video_api(request):
+    query = request.GET.get("q")
+
+    video = get_video(query)
+
+    return JsonResponse({
+        "video": video
+    })

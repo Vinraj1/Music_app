@@ -5,6 +5,7 @@ class Song(models.Model):
     title= models.TextField()
     artist= models.TextField()
     image= models.ImageField(upload_to = "media/")
+    video_url = models.URLField(blank=True, null=True)
     audio_file = models.FileField(upload_to = "media/")
     audio_link = models.CharField(max_length=200,blank=True,null=True)
     lyrics=models.TextField(blank=True,null=True)

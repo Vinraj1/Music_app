@@ -19,8 +19,7 @@
         </div>
 
         <div class="nav-right">
-            <a href="{% url 'Music_app:search_spotify' %}">Search</a>
-            <a href="{% url 'Music_app:index' %}">Home</a>
+            <a href="{% url 'Music_app:search' %}">Search</a>
             <a href="{% url 'Music_app:upload_song' %}">Upload</a>
         </div>
 
@@ -58,11 +57,11 @@
     <div class="pagination">
 
         {% if page_obj.has_previous %}
-        <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+            <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
         {% endif %}
 
         {% if page_obj.has_next %}
-        <a href="?page={{ page_obj.next_page_number }}">Next</a>
+            <a href="?page={{ page_obj.next_page_number }}">Next</a>
         {% endif %}
 
     </div>

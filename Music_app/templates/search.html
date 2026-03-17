@@ -4,16 +4,13 @@
 
 <head>
     <title>Music Player</title>
-    <!-- CSS -->
     <link rel="stylesheet" href="{% static 'style.css' %}">
 </head>
 
 <body>
 
-    <!-- Page Title -->
     <!-- Navbar -->
     <nav class="navbar">
-
         <div class="nav-left">
             <span class="logo">🎵 Music Player</span>
         </div>
@@ -22,44 +19,114 @@
             <a href="{% url 'Music_app:index' %}">Home</a>
             <a href="{% url 'Music_app:upload_song' %}">Upload</a>
         </div>
-
     </nav>
 
-    <h1>Search Music</h1>
+    <!-- Search -->
+    <div class="search-container">
+        <form method="GET" class="search-form">
+            <input type="text" name="q" placeholder="Search songs..." value="{{ request.GET.q }}">
+            <button type="submit">Search</button>
+        </form>
+    </div>
 
-    <form method="GET">
-        <input type="text" name="q" placeholder="Search songs...">
-        <button type="submit">Search</button>
-    </form>
+    <!-- Results -->
+    <div class="results-grid">
 
-    <div class="music-container">
-
+        {% if songs %}
         {% for song in songs %}
-        <div class="player"
-            onclick="playSong('{{ song.preview }}', '{{ song.title }}', '{{ song.artist }}', '{{ song.image }}')">
+        <div class="song-card">
+            <div class="image-container" onclick="playMedia('{{ song.title }} {{ song.artist }}', this)">
 
-            <img src="{{ song.image }}">
-            <h2>{{ song.title }}</h2>
+                <img src="{{ song.cover }}" class="song-img">
+
+                <!-- Play Button -->
+                <div class="play-btn">▶</div>
+            </div>
+
+            <h3>{{ song.title }}</h3>
             <p>{{ song.artist }}</p>
 
+            <!-- Hidden audio -->
+            <audio class="audio-player">
+                <source src="{{ song.preview }}" type="audio/mpeg">
+            </audio>
+
+            <!-- Video container -->
+            <div class="video-container"></div>
         </div>
         {% endfor %}
+        {% else %}
+        <p class="no-results">No songs found</p>
+        {% endif %}
 
     </div>
 
-    <!-- Bottom Player -->
-    <div class="bottom-player" id="bottomPlayer">
+    <script>
+        function playMedia(query, element) {
 
-        <img id="playerImage">
+            const card = element.parentElement;
+            const audio = card.querySelector(".audio-player");
+            const videoContainer = card.querySelector(".video-container");
+            const button = element.querySelector(".play-btn");
 
-        <div>
-            <h3 id="playerTitle"></h3>
-            <p id="playerArtist"></p>
-        </div>
+            const allAudios = document.querySelectorAll(".audio-player");
+            const allVideos = document.querySelectorAll(".video-container");
+            const allButtons = document.querySelectorAll(".play-btn");
 
-        <audio id="mainAudio" controls></audio>
+            if (!audio.paused) {
+                audio.pause();
+                button.innerHTML = "▶";
+                return;
+            }
 
-    </div>
+            // 🧠 RESET EVERYTHING FIRST
+            allAudios.forEach(a => {
+                a.pause();
+                a.currentTime = 0;
+            });
+
+            allVideos.forEach(v => v.innerHTML = "");
+
+            allButtons.forEach(btn => btn.innerHTML = "▶");
+
+            fetch(`/get-video/?q=${encodeURIComponent(query)}`)
+                .then(res => res.json())
+                .then(data => {
+
+                    if (data.video) {
+                        // 🎥 PLAY VIDEO
+                        videoContainer.innerHTML = `
+                <iframe width="100%" height="200"
+                src="${data.video}?autoplay=1"
+                frameborder="0" allow="autoplay"
+                allowfullscreen>
+                </iframe>
+            `;
+
+                        button.innerHTML = "⏸"; // show pause
+                    } else {
+                        // 🎵 PLAY AUDIO
+                        audio.play();
+                        button.innerHTML = "⏸";
+
+                        // 🔁 when audio ends → reset button
+                        audio.onended = () => {
+                            button.innerHTML = "▶";
+                        };
+                    }
+
+                })
+                .catch(() => {
+                    // fallback audio
+                    audio.play();
+                    button.innerHTML = "⏸";
+
+                    audio.onended = () => {
+                        button.innerHTML = "▶";
+                    };
+                });
+        }
+    </script>
 
 </body>
 
