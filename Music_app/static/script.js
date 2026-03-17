@@ -44,3 +44,46 @@ songs.forEach((song, index) => {
     });
 
 });
+
+let queue = [];
+let currentIndex = 0;
+
+const audio = document.getElementById("mainAudio");
+
+function playSong(url, title, artist, image){
+
+    if(!url){
+        alert("No preview available");
+        return;
+    }
+
+    // Add to queue
+    queue.push({url, title, artist, image});
+    currentIndex = queue.length - 1;
+
+    loadSong(queue[currentIndex]);
+}
+
+function loadSong(song){
+
+    document.getElementById("playerTitle").innerText = song.title;
+    document.getElementById("playerArtist").innerText = song.artist;
+    document.getElementById("playerImage").src = song.image;
+
+    audio.src = song.url;
+    audio.play();
+}
+
+// Auto next song
+audio.addEventListener("ended", function(){
+
+    currentIndex++;
+
+    if(currentIndex < queue.length){
+        loadSong(queue[currentIndex]);
+    }else{
+        currentIndex = 0; // loop queue
+        loadSong(queue[currentIndex]);
+    }
+
+});
