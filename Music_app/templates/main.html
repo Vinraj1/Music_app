@@ -31,16 +31,16 @@
     <!-- Music Grid -->
     <div class="music-container">
 
-        {% for song in page_obj %}
+        {% for song in songs %}
 
         <div class="player" data-index="{{ forloop.counter0 }}">
 
-            <img src="{{ song.image.url }}" width="200">
+            <img src="{{ song.cover }}" width="200">
 
             <h2>{{ song.title }}</h2>
 
             <audio class="fc-media" controls>
-                <source src="{{ song.audio_file.url }}" type="audio/mpeg">
+                <source src="{{ song.preview }}" type="audio/mpeg">
             </audio>
 
             <div class="lyrics-container">
@@ -51,17 +51,15 @@
 
         {% endfor %}
 
-    </div>
-
     <!-- Pagination -->
     <div class="pagination">
 
         {% if page_obj.has_previous %}
-            <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+        <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
         {% endif %}
 
         {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}">Next</a>
+        <a href="?page={{ page_obj.next_page_number }}">Next</a>
         {% endif %}
 
     </div>

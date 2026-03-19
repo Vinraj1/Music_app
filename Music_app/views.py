@@ -4,20 +4,27 @@ from . models import Song
 import requests
 import base64
 from .services.deezer import search_songs
-from .services.youtube import get_video
 from django.http import JsonResponse
 
-
 def index(request):
-    paginator = Paginator(Song.objects.all().order_by('id'), 9)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-    context={"page_obj":page_obj}
-    return render(request,"index.html",context)
+    songs = get_trending()
+
+    for song in songs:
+        deezer_data = search_songs(f"{song['title']} {song['artist']}")
+
+        print("SEARCHING:", f"{song['title']} {song['artist']}")
+
+        if deezer_data:
+            best = deezer_data[0]
+            song["preview"] = best.get("preview")
+            song["cover"] = best.get("cover")
+        else:
+            song["preview"] = None
+
+    return render(request, "index.html", {"songs": songs})
 
 def upload_song(request):
     if request.method == "POST":
-
         title = request.POST.get("title")
         artist = request.POST.get("artist")
         image = request.FILES.get("image")
@@ -47,31 +54,72 @@ def search(request):
     if query:
         results = search_songs(query)
 
-        for song in results:
-            video = get_video(f"{song['title']} {song['artist']}")
-            song['video'] = video
-
         songs = results
 
     return render(request, "search.html", {"songs": songs})
-
+'''
 def get_trending():
+
     url = "http://ws.audioscrobbler.com/2.0/"
-    
     params = {
-        "method": "chart.gettoptracks",
-        "api_key": "YOUR_LASTFM_KEY",
+        "method": "geo.gettoptracks",   # ✅ India-specific
+        "country": "india",
+        "api_key": "a1dd591c4f90718c9b93d3472353b1aa",
         "format": "json"
     }
 
     res = requests.get(url, params=params)
-    return res.json()
+    data = res.json()
 
-def get_video_api(request):
-    query = request.GET.get("q")
+    songs = []
 
-    video = get_video(query)
+    tracks = data.get("tracks", {}).get("track", [])
 
-    return JsonResponse({
-        "video": video
-    })
+    for track in tracks[:12]:
+        songs.append({
+            "title": track.get("name"),
+            "artist": track.get("artist", {}).get("name"),
+        })
+
+    return songs
+'''
+
+def get_trending():
+
+    import requests
+
+    url = "http://ws.audioscrobbler.com/2.0/"
+    params = {
+        "method": "chart.gettoptracks",   # global
+        "api_key": "a1dd591c4f90718c9b93d3472353b1aa",
+        "format": "json"
+    }
+
+    res = requests.get(url, params=params)
+    data = res.json()
+
+    songs = []
+
+    # 🔥 Indian artist keywords
+    indian_keywords = [
+        "arijit", "pritam", "shreya", "atif", "armaan",
+        "badshah", "neha", "jubin", "darshan", "vishal",
+        "anirudh", "sidhu", "kk", "sonu", "sunidhi"
+    ]
+
+    tracks = data.get("tracks", {}).get("track", [])
+
+    # 🔥 loop through MORE tracks (important)
+    for track in tracks:
+        artist = track.get("artist", {}).get("name", "").lower()
+
+        if any(k in artist for k in indian_keywords):
+            songs.append({
+                "title": track.get("name"),
+                "artist": track.get("artist", {}).get("name"),
+            })
+
+        if len(songs) == 12:   # limit AFTER filtering
+            break
+
+    return songs

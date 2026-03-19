@@ -2,13 +2,19 @@ import requests
 
 def search_songs(query):
     url = "https://striveschool-api.herokuapp.com/api/deezer/search"
-    
-    params = {
-        "q": query
-    }
 
-    response = requests.get(url, params=params)
-    data = response.json()
+    try:
+        response = requests.get(url, params={"q": query})
+
+        # ✅ check if response is OK
+        if response.status_code != 200:
+            return []
+
+        data = response.json()
+
+    except Exception as e:
+        print("DEEZEER ERROR:", e)
+        return []
 
     songs = []
     for item in data.get('data', []):
